@@ -1,6 +1,7 @@
 package com.musala.droneapi.controllers;
 
 import com.musala.droneapi.model.Drone;
+import com.musala.droneapi.model.Medication;
 import com.musala.droneapi.services.impl.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,12 @@ public class DroneRestController {
     public ResponseEntity<Drone> registerUser(@RequestBody @Validated Drone drone){
         return new ResponseEntity<>(droneService.saveDrone(drone), HttpStatus.OK);
     }
+
+    @PostMapping("medication/load/{droneId}")
+    public ResponseEntity<Medication> registerMedicationByDrone(@RequestBody @Validated Medication medication, @PathVariable Long droneId){
+        return new ResponseEntity<>(droneService.saveMedicationByDroneId(medication, droneId), HttpStatus.OK);
+    }
+
 
 
 }
