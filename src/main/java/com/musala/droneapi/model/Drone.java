@@ -32,3 +32,4 @@ public class Drone {
     @OneToMany(mappedBy = "drone")
     List<Medication> medications;
 }
+
