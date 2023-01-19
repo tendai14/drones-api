@@ -42,11 +42,13 @@ public class DroneService {
             weights.add(md.getWeight());
         }
         double sum = weights.stream().mapToDouble(Double::doubleValue).sum();
-        if (drone.isPresent() && drone.get().getState().equals(DroneState.IDLE.toString())){
+        if (drone.isPresent()){
             medication.setDrone(drone.orElse(null));
-            if (sum <= 500 && medication.getWeight()<(500-sum)){
+            if (sum < 500 || medication.getWeight()<(500-sum)){
                 medicationObject =  medicationRepository.save(medication);
-                updateDrone(drone.get(), drone.get().getId(), DroneState.LOADING.toString());
+                if (drone.get().getState().equals(DroneState.IDLE.toString())){
+                    updateDrone(drone.get(), drone.get().getId(), DroneState.LOADING.toString());
+                }
             }
         }
         return medicationObject;
