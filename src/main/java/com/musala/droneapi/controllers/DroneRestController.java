@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("api/")
@@ -30,7 +31,11 @@ public class DroneRestController {
 
     @PostMapping("medication/load/{droneId}")
     public ResponseEntity<Medication> registerMedicationByDrone(@RequestBody @Validated Medication medication, @PathVariable Long droneId){
-        return new ResponseEntity<>(droneService.saveMedicationByDroneId(medication, droneId), HttpStatus.OK);
+        if (Pattern.matches("^[a-zA-Z0-9_.-]*$", medication.getName())){
+            return new ResponseEntity<>(droneService.saveMedicationByDroneId(medication, droneId), HttpStatus.OK);
+        }
+
+        return null;
     }
 
     @GetMapping("medications/{droneId}")
